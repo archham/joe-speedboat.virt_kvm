@@ -32,6 +32,13 @@ Install from [Github](https://github.com/joe-speedboat/joe-speedboat.virt_kvm)
 git clone https://github.com/joe-speedboat/joe-speedboat.virt_kvm.git joe-speedboat.virt_kvm
 ```
 
+## Dependencies
+
+Install ansible.netcommon collection
+```
+ansible-galaxy collection install ansible.netcommon
+```
+
 ## Usage
 Example playbooks for this role are located in `test` folder:
 * `tests/test.yml`
