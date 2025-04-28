@@ -48,7 +48,7 @@ virt_kvm_tools:
 install_sense_vm: false
 sense_vms:
 - name: gate
-  url: https://mirror-opnsense.serverbase.ch/releases/mirror/OPNsense-21.7.1-OpenSSL-nano-amd64.img.bz2 # .img.bz2
+  url: https://mirror-opnsense.serverbase.ch/releases/mirror/OPNsense-25.1-nano-amd64.img.bz2 # .img.bz2
   disk_dir: /srv/img
   disk_size: 10G
   vm_bridge: BRIDGE
