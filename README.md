@@ -36,9 +36,14 @@ git clone https://github.com/joe-speedboat/joe-speedboat.virt_kvm.git joe-speedb
 
 ## Dependencies
 
-Install ansible.netcommon collection
+Install ansible collection requirements
 ```
-ansible-galaxy collection install ansible.netcommon
+ansible-galaxy collection install -r requirements.yml
+```
+
+Install python module on ansible node
+```
+sudo dnf install -y python3-netaddr
 ```
 
 ## Usage
