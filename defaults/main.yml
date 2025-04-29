@@ -49,7 +49,7 @@ install_sense_vm: false
 sense_vms:
 - name: gate
   url: https://mirror-opnsense.serverbase.ch/releases/mirror/OPNsense-25.1-nano-amd64.img.bz2 # .img.bz2
-  disk_dir: /srv/img
+  disk_dir: /srv/kvm/nvme-vdo
   disk_size: 10G
   vm_bridge: BRIDGE
   vm_bridge_mac: '02:ed:a5:66:04:13'
