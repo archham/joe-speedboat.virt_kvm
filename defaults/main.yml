@@ -61,19 +61,19 @@ sense_vms:
 install_rocky_vms: false
 rocky_vms:
 - name: control
-  url: https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2
+  url: https://dl.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9-latest-x86_64-minimal.iso
   disk_dir: /srv/kvm/nvme-vdo
   disk_size: 50G
   vm_net: ADMIN
   vm_mac: '02:91:45:b5:e5:b4'
   mem: 2048
   cpu: 2
-  extra_cmds: 
-  - dnf -y install git tmux vim wget rsync epel-release lvm2 container-selinux firewalld
-  - dnf -y install firefox
+  #extra_cmds: 
+  #- dnf -y install git tmux vim wget rsync epel-release lvm2 container-selinux firewalld
+  #- dnf -y install firefox
   #- dnf -y group install "Xfce" "base-x" 
   #- curl -L https://www.cendio.com/downloads/server/download.py --output /root/tl-server.zip
-  rootpw: redhat...
+  #rootpw: redhat...
 
 ## reboot system if needed
 virt_kvm_reboot_enabled: true
