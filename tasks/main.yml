@@ -217,7 +217,7 @@
   with_items: "{{ sense_vms }}"
   when: install_sense_vm
 
-- name: create centos vm with ugly shell scripts
+- name: create rocky vm with ugly shell scripts
   shell: |
     wget "{{ item.url }}" -q -O "{{ item.disk_dir }}/{{ item.name }}.qcow2"
 
@@ -227,12 +227,12 @@
       -a "{{ item.disk_dir }}/{{ item.name }}.qcow2" \
       --root-password password:"{{ item.rootpw }}"  \
       --selinux-relabel \
-      --run-command "{{ ( item.extra_cmds + centos_cloud_img_cleanup_cmds ) |join(';') }}" || true
+      --run-command "{{ ( item.extra_cmds + centos_cloud_img_cleanup_cmds ) |join(';') }}"; touch /etc/cloud/cloud-init.disabled" || true
 
     virt-install -n "{{ item.name }}" \
       --description "{{ item.name }} VM" \
       --os-type=Linux \
-      --os-variant=rhel7.0 \
+      --os-variant=rhel9.0 \
       --ram="{{ item.mem }}" \
       --vcpus="{{ item.cpu }}" \
       --disk path={{ item.disk_dir }}/{{ item.name }}.qcow2,bus=virtio \
@@ -242,5 +242,5 @@
       --boot useserial=on \
       --rng /dev/random \
       --noreboot || true
-  with_items: "{{ cos_vms }}"
-  when: install_cos_vms
+  with_items: "{{ rocky_vms }}"
+  when: install_rocky_vms

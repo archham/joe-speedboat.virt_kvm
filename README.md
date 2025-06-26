@@ -46,6 +46,11 @@ Install python module on ansible node
 sudo dnf install -y python3-netaddr
 ```
 
+Ensure that the user you want to use is in the libvirt group on the target server
+```
+sudo usermod -aG libvirt archham
+```
+
 ## Usage
 Example playbooks for this role are located in `test` folder:
 * `tests/test.yml`

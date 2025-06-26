@@ -53,18 +53,18 @@ sense_vms:
   disk_size: 10G
   vm_bridge: BRIDGE
   vm_bridge_mac: '02:ed:a5:66:04:13'
-  vm_net: LAN
+  vm_net: ADMIN
   mem: 1024
   cpu: 2
 
 
-install_cos_vms: false
-cos_vms:
+install_rocky_vms: false
+rocky_vms:
 - name: control
-  url: https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.4.2105-20210603.0.x86_64.qcow2
-  disk_dir: /srv/img
+  url: https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2
+  disk_dir: /srv/kvm/nvme-vdo
   disk_size: 50G
-  vm_net: LAN
+  vm_net: ADMIN
   vm_mac: '02:91:45:b5:e5:b4'
   mem: 2048
   cpu: 2
