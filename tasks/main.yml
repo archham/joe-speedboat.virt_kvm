@@ -217,10 +217,56 @@
   with_items: "{{ sense_vms }}"
   when: install_sense_vm
 
+
+- name: Find remastered Rocky ISO file on localhost
+  ansible.builtin.find:
+    paths: /srv/iso.remaster/rocky9/
+    patterns: 'remastered-custom_rocky9*.iso'
+  register: found_iso
+  delegate_to: localhost
+
+- name: Fail if no ISO found on localhost
+  ansible.builtin.fail:
+    msg: "No ISO file found in /srv/iso.remaster/rocky9/"
+  when: found_iso.matched == 0
+    #
+    #
+    #- name: Find remastered Rocky ISO file on remote host
+    #  ansible.builtin.find:
+    #    paths: /srv/iso.remaster/rocky9/
+    #    patterns: 'remastered-custom_rocky9*.iso'
+    #  register: found_iso_remote
+    #
+    #- name: Fail if no ISO found on remote
+    #  ansible.builtin.fail:
+    #    msg: "No ISO file found at destination" 
+    #  when: found_iso_remote.matched == 0
+    #
+- name: Skip copy ISO if found on remote host
+  ansible.builtin.fail:
+    msg: "No ISO file found at destination" 
+  when: found_iso_remote.matched == 0
+    #
+    #
+- name: Copy remastered ISO to VM directory
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: '{{ vm_item.disk_dir }}/{{ vm_item.name }}.iso'
+    owner: root
+    group: root
+    mode: '0755'
+  with_items: "{{ rocky_vms }}"
+  loop_control:
+    loop_var: vm_item
+  vars:
+    item: "{{ found_iso.files[0] }}"
+  when: 
+    - install_rocky_vms
+    - found_iso_remote.matched == 0
+
+  # wget "{{ item.url }}" -q -O "{{ item.disk_dir }}/{{ item.name }}.iso"
 - name: create rocky vm using ISO installer
   shell: |
-    wget "{{ item.url }}" -q -O "{{ item.disk_dir }}/{{ item.name }}.iso"
-
     qemu-img create -f qcow2 "{{ item.disk_dir }}/{{ item.name }}.qcow2" "{{ item.disk_size }}"
 
     virt-install -n "{{ item.name }}" \
