@@ -246,7 +246,7 @@
   ansible.builtin.stat:
     path: "{{ vm_item.disk_dir }}/{{ vm_item.name }}.iso"
   register: found_iso_remote
-  with_items: "{{ rocky_vms }}"
+  loop: "{{ rocky_vms }}"
   loop_control:
     loop_var: vm_item
     #
