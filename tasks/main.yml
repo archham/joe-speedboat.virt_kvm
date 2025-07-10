@@ -258,7 +258,7 @@
     owner: root
     group: root
     mode: '0755'
-  with_items: "{{ rocky_vms }}"
+  loop: "{{ rocky_vms }}"
   loop_control:
     loop_var: vm_item
   vars:
