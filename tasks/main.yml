@@ -249,24 +249,26 @@
   loop: "{{ rocky_vms }}"
   loop_control:
     loop_var: vm_item
+    index_var: iso_idx
     #
     #
 - name: Copy remastered ISO to VM directory
   ansible.builtin.copy:
-    src: "{{ item.path }}"
-    dest: '{{ vm_item.disk_dir }}/{{ vm_item.name }}.iso'
+    src: "{{ iso_file.path }}"
+    dest: "{{ vm_item.disk_dir }}/{{ vm_item.name }}.iso"
     owner: root
     group: root
     mode: '0755'
   loop: "{{ rocky_vms }}"
   loop_control:
     loop_var: vm_item
+    index_var: iso_idx
   vars:
-    item: "{{ found_iso.files[0] }}"
+    iso_file: "{{ found_iso.files[0] }}"
   when:
     - install_rocky_vms
     - found_iso.matched > 0
-    - not found_iso_remote.results[ansible_loop.index0].stat.exists
+    - not found_iso_remote.results[iso_idx].stat.exists
 
   # wget "{{ item.url }}" -q -O "{{ item.disk_dir }}/{{ item.name }}.iso"
 - name: create rocky vm using ISO installer
