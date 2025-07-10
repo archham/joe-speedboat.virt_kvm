@@ -229,33 +229,20 @@
   ansible.builtin.fail:
     msg: "No ISO file found in /srv/iso.remaster/rocky9/"
   when: found_iso.matched == 0
-    #
-    #
-    #- name: Find remastered Rocky ISO file on remote host
-    #  ansible.builtin.find:
-    #    paths: /srv/iso.remaster/rocky9/
-    #    patterns: 'remastered-custom_rocky9*.iso'
-    #  register: found_iso_remote
-    #
-    #- name: Fail if no ISO found on remote
-    #  ansible.builtin.fail:
-    #    msg: "No ISO file found at destination" 
-    #  when: found_iso_remote.matched == 0
-    #
+
 - name: Check if remastered ISO exists on remote host
   ansible.builtin.stat:
-    path: "{{ vm_item.disk_dir }}/{{ vm_item.name }}.iso"
+   path: "{{ vm_item.iso_disk_dir }}/{{ vm_item.name }}.iso"
   register: found_iso_remote
   loop: "{{ rocky_vms }}"
   loop_control:
     loop_var: vm_item
     index_var: iso_idx
-    #
-    #
+
 - name: Copy remastered ISO to VM directory
   ansible.builtin.copy:
     src: "{{ iso_file.path }}"
-    dest: "{{ vm_item.disk_dir }}/{{ vm_item.name }}.iso"
+    dest: "{{ vm_item.iso_disk_dir }}/{{ vm_item.name }}.iso"
     owner: root
     group: root
     mode: '0755'
@@ -270,7 +257,6 @@
     - found_iso.matched > 0
     - not found_iso_remote.results[iso_idx].stat.exists
 
-  # wget "{{ item.url }}" -q -O "{{ item.disk_dir }}/{{ item.name }}.iso"
 - name: create rocky vm using ISO installer
   shell: |
     qemu-img create -f qcow2 "{{ item.disk_dir }}/{{ item.name }}.qcow2" "{{ item.disk_size }}"
@@ -278,11 +264,11 @@
     virt-install -n "{{ item.name }}" \
       --description "{{ item.name }} VM" \
       --os-type=Linux \
-      --os-variant=rhel9.0 \
+      --os-variant=rocky9 \
       --ram="{{ item.mem }}" \
       --vcpus="{{ item.cpu }}" \
       --disk path={{ item.disk_dir }}/{{ item.name }}.qcow2,bus=virtio \
-      --disk path={{ item.disk_dir }}/{{ item.name }}.iso,device=cdrom \
+      --disk path={{ item.iso_disk_dir }}/{{ item.name }}.iso,device=cdrom \
       --graphics vnc \
       --network network={{ item.vm_net }},model=virtio,mac={{ item.vm_mac }} \
       --boot cdrom,useserial=on \
