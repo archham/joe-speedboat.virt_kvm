@@ -158,6 +158,8 @@
      - Reboot System
   when: nic_to_bridge and  ansible_default_ipv4.interface != nic_to_bridge_ifname
 
+- meta: flush_handlers  # ensure bridge configuration and reboot are applied before VM creation
+
 - name: Download virt helpers
   get_url:
     url: "{{ item.url }}"
