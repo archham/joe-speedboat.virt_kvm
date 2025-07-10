@@ -2,7 +2,7 @@
 
 An Ansible Role to install and configure a kvm host on hetzner machine.
 
-Tested with Ansible 2.14.17
+Tested with Ansible 2.18.5
 
 ## Motivation
 
