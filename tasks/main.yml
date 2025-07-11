@@ -265,15 +265,14 @@
 
     virt-install -n "{{ item.name }}" \
       --description "{{ item.name }} VM" \
-      --os-type=Linux \
-      --os-variant=rocky9 \
+      --osinfo=rocky9 \
       --ram="{{ item.mem }}" \
       --vcpus="{{ item.cpu }}" \
       --disk path={{ item.disk_dir }}/{{ item.name }}.qcow2,bus=virtio \
       --disk path={{ item.iso_disk_dir }}/{{ item.name }}.iso,device=cdrom \
       --graphics vnc \
       --network network={{ item.vm_net }},model=virtio,mac={{ item.vm_mac }} \
-      --boot cdrom,useserial=on \
+      --boot cdrom,loader=/usr/share/edk2/ovmf/OVMF_CODE.fd,loader.readonly=yes,loader.type=pflash,nvram=/var/lib/libvirt/qemu/nvram/{{ item.name }}_VARS.fd,hd \
       --rng /dev/random \
       --noreboot || true
   with_items: "{{ rocky_vms }}"
