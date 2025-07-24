@@ -48,7 +48,7 @@ sudo dnf install -y python3-netaddr
 
 Ensure that the user you want to use is in the libvirt group on the target server
 ```
-sudo usermod -aG libvirt archham
+sudo usermod -aG libvirt $USER
 ```
 
 ## Usage
